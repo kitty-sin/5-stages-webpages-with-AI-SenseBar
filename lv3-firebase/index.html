@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lv.3 Firebase 即時競賽測驗 - 即時競賽版</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: rgba(30, 41, 59, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      
+      --neon-cyan: #06b6d4;
+      --neon-green: #10b981;
+      --neon-purple: #8b5cf6;
+      --neon-red: #ef4444;
+      --neon-pink: #ec4899;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.12) 0%, transparent 40%);
+      background-attachment: fixed;
+      font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      z-index: 10;
+    }
+
+    .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .back-btn:hover {
+      color: var(--neon-cyan);
+    }
+
+    .level-indicator {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .quiz-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #fff, var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slogan {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 1rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .input-field {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: white;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
+    }
+
+    .question-block {
+      margin-bottom: 2.5rem;
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .option-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .option-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(4px);
+    }
+
+    .option-radio {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--text-sub);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .option-item.selected {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: var(--neon-cyan);
+    }
+
+    .option-item.selected .option-radio {
+      border-color: var(--neon-cyan);
+      background: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+    }
+
+    .option-item.correct {
+      background: rgba(16, 185, 129, 0.12) !important;
+      border-color: var(--neon-green) !important;
+    }
+
+    .option-item.correct .option-radio {
+      border-color: var(--neon-green) !important;
+      background: var(--neon-green) !important;
+    }
+
+    .option-item.incorrect {
+      background: rgba(239, 68, 68, 0.12) !important;
+      border-color: var(--neon-red) !important;
+    }
+
+    .option-item.incorrect .option-radio {
+      border-color: var(--neon-red) !important;
+      background: var(--neon-red) !important;
+    }
+
+    .explanation {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 3px solid var(--neon-cyan);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-sub);
+      display: none;
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 1.1rem;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.2);
+    }
+
+    .action-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(6, 182, 212, 0.35);
+    }
+
+    .status-msg {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+    }
+
+    .status-msg.success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--neon-green);
+      color: var(--neon-green);
+    }
+
+    .status-msg.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--neon-red);
+      color: var(--neon-red);
+    }
+
+    /* Leaderboard Styling */
+    .leaderboard-section {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.8rem;
+      margin-top: 2rem;
+      position: relative;
+    }
+
+    .leaderboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 0.8rem;
+    }
+
+    .leaderboard-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .leaderboard-indicator {
+      font-size: 0.75rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--neon-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    .leaderboard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .leaderboard-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .leaderboard-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(6, 182, 212, 0.3);
+      transform: scale(1.01);
+    }
+
+    .leaderboard-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .rank {
+      font-weight: 800;
+      font-size: 1rem;
+      width: 25px;
+      color: var(--text-sub);
+    }
+
+    .rank-1 { color: #facc15; font-size: 1.2rem; }
+    .rank-2 { color: #cbd5e1; font-size: 1.1rem; }
+    .rank-3 { color: #cd7f32; font-size: 1.05rem; }
+
+    .name {
+      font-weight: 600;
+    }
+
+    .score {
+      font-weight: 800;
+      color: var(--neon-cyan);
+    }
+
+    .time {
+      font-size: 0.7rem;
+      color: var(--text-sub);
+      margin-left: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="nav-header">
+      <a class="back-btn" href="../index.html">← 返回首頁</a>
+      <span class="level-indicator">LEVEL 3：Firebase 即時同步</span>
+    </div>
+
+    <div class="quiz-card">
+      <h1>互動式能力階梯測驗 - Lv.3</h1>
+      <p class="slogan">即時競賽版・作答完分數自動同步大螢幕排行榜</p>
+
+      <div id="quiz-container">
+        <div class="input-group" style="margin-bottom: 2rem;">
+          <label for="student-nickname">班級座號 / 暱稱 (必填)</label>
+          <input type="text" id="student-nickname" class="input-field" placeholder="請輸入座號或暱稱，例如：70308 或 小明">
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-block" data-qindex="0">
+          <p class="question-text">1. 下列關於 Lv.1 純前端（算完就忘）架構的敘述，何者正確？</p>
+          <div class="options-list">
+            <div class="option-item" onclick="selectOption(0, 'A')">
+              <span class="option-radio"></span>
+              <span>A. 資料會存存放於 Google 試算表中</span>
+            </div>
+            <div class="option-item" onclick="selectOption(0, 'B')">
+              <span class="option-radio"></span>
+              <span>B. 關閉網頁或重新整理後，先前的作答資料就會消失</span>
+            </div>
+            <div class="option-item" onclick="selectOption(0, 'C')">
+              <span class="option-radio"></span>
+              <span>C. 必須撰寫複雜的 Firebase 安全規則</span>
+            </div>
+            <div class="option-item" onclick="selectOption(0, 'D')">
+              <span class="option-radio"></span>
+              <span>D. 可以安全地隱藏 AI API Key</span>
+            </div>
+          </div>
+          <div class="explanation" id="exp-0">
+            <strong>解析：</strong>B 是正確答案。Lv.1 完全運行在瀏覽器記憶體中，關閉或重新整理網頁後資料即消失，無任何資料庫或後端，因此零維護成本且隱私極度安全。
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-block" data-qindex="1">
+          <p class="question-text">2. 老師想以「非即時」方式收集學生成績，且希望在自己最熟悉的試算表介面查看數據，最適合哪一級？</p>
+          <div class="options-list">
+            <div class="option-item" onclick="selectOption(1, 'A')">
+              <span class="option-radio"></span>
+              <span>A. Lv.1 純前端</span>
+            </div>
+            <div class="option-item" onclick="selectOption(1, 'B')">
+              <span class="option-radio"></span>
+              <span>B. Lv.2 Google Sheets 後端</span>
+            </div>
+            <div class="option-item" onclick="selectOption(1, 'C')">
+              <span class="option-radio"></span>
+              <span>C. Lv.3 Firebase 後端</span>
+            </div>
+            <div class="option-item" onclick="selectOption(1, 'D')">
+              <span class="option-radio"></span>
+              <span>D. 前後端 + AI</span>
+            </div>
+          </div>
+          <div class="explanation" id="exp-1">
+            <strong>解析：</strong>B 是正確答案。Lv.2 使用 Google Sheets 作為後端，資料直接寫入試算表，方便老師讀取、排序和分析，非常適合非即時的成績登錄。
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-block" data-qindex="2">
+          <p class="question-text">3. 關於 Lv.3 Firebase 後端（即時競賽版）與 Lv.2 Google Sheets 後端（課後回收版）的主要差別，下列敘述何者正確？</p>
+          <div class="options-list">
+            <div class="option-item" onclick="selectOption(2, 'A')">
+              <span class="option-radio"></span>
+              <span>A. Lv.3 可以做到「秒級」的多人即時同步與大螢幕排行榜更新</span>
+            </div>
+            <div class="option-item" onclick="selectOption(2, 'B')">
+              <span class="option-radio"></span>
+              <span>B. Lv.3 寫入速度較慢，比較適合非即時的課後回饋</span>
+            </div>
+            <div class="option-item" onclick="selectOption(2, 'C')">
+              <span class="option-radio"></span>
+              <span>C. Lv.2 不需要透過任何後端代理就能把資料直接存入</span>
+            </div>
+            <div class="option-item" onclick="selectOption(2, 'D')">
+              <span class="option-radio"></span>
+              <span>D. Lv.2 可以承載比 Lv.3 更高頻率的多人同時寫入</span>
+            </div>
+          </div>
+          <div class="explanation" id="exp-2">
+            <strong>解析：</strong>A 是正確答案。Lv.3 使用 Firebase 即時資料庫，具備極強的即時同步能力，非常適合課堂當下的多人搶答與即時排行榜；而 Lv.2 (Google Sheets) 寫入與響應速度較慢，不適合秒級同步。
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-block" data-qindex="3">
+          <p class="question-text">4. 在 Lv.4 中，為了不讓 Groq API Key 在前端瀏覽器中外洩（被按 F12 檢視原始碼偷走），正確的做法是？</p>
+          <div class="options-list">
+            <div class="option-item" onclick="selectOption(3, 'A')">
+              <span class="option-radio"></span>
+              <span>A. 將 Key 寫在前端 JavaScript 的變數中，並進行加密</span>
+            </div>
+            <div class="option-item" onclick="selectOption(3, 'B')">
+              <span class="option-radio"></span>
+              <span>B. 將 Key 放在 Firebase Firestore 的公開欄位</span>
+            </div>
+            <div class="option-item" onclick="selectOption(3, 'C')">
+              <span class="option-radio"></span>
+              <span>C. 使用 Netlify Functions 當作後端代理，並將 Key 存放於伺服器環境變數中</span>
+            </div>
+            <div class="option-item" onclick="selectOption(3, 'D')">
+              <span class="option-radio"></span>
+              <span>D. 將 Key 存放於 Google 試算表內，由前端直接 Fetch 讀取</span>
+            </div>
+          </div>
+          <div class="explanation" id="exp-3">
+            <strong>解析：</strong>C 是正確答案。Netlify Functions 在伺服器端運行，能讀取環境變數，前端只能呼叫其端點而碰不到金鑰本身，非常安全。
+          </div>
+        </div>
+
+        <button class="action-btn" onclick="submitQuiz()" id="submit-btn">送出測驗並加入即時排行榜</button>
+        <div class="status-msg" id="status-display"></div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Section -->
+    <div class="leaderboard-section">
+      <div class="leaderboard-header">
+        <div class="leaderboard-title">🏆 班級即時競賽排行榜 (`quiz_lv3_leaderboard`)</div>
+        <span class="leaderboard-indicator" id="sync-status">● Live 即時同步中</span>
+      </div>
+      <div class="leaderboard-list" id="leaderboard-container">
+        <!-- Will be populated dynamically -->
+        <div style="text-align: center; color: var(--text-sub); padding: 1rem; font-size: 0.9rem;">正在同步即時排行榜資料...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase v10 SDK Imports -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getFirestore, 
+      collection, 
+      addDoc, 
+      onSnapshot, 
+      query, 
+      orderBy, 
+      limit,
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Firebase Configurations securely loaded from Vite env
+    const firebaseConfig = {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+      appId: import.meta.env.VITE_FIREBASE_APP_ID
+    };
+
+    // Initialize Firebase
+    let db;
+    let isFirebaseReady = false;
+    
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      isFirebaseReady = true;
+    } catch (e) {
+      console.error("Firebase 初始化失敗，改用模擬模式:", e);
+      document.getElementById('sync-status').textContent = "模擬模式";
+      document.getElementById('sync-status').style.color = "#f97316";
+      document.getElementById('sync-status').style.borderColor = "#f97316";
+    }
+
+    const correctAnswers = ['B', 'B', 'A', 'C'];
+    let userAnswers = [null, null, null, null];
+    let isGraded = false;
+
+    // Make functions globally available for inline onclick attributes
+    window.selectOption = function(qIndex, optionLetter) {
+      if (isGraded) return;
+      
+      const qBlock = document.querySelector(`.question-block[data-qindex="${qIndex}"]`);
+      const options = qBlock.querySelectorAll('.option-item');
+      
+      options.forEach(opt => opt.classList.remove('selected'));
+      
+      const letterIndex = optionLetter.charCodeAt(0) - 65;
+      options[letterIndex].classList.add('selected');
+      
+      userAnswers[qIndex] = optionLetter;
+    };
+
+    window.submitQuiz = async function() {
+      if (isGraded) return;
+
+      const nickname = document.getElementById('student-nickname').value.trim();
+      if (!nickname) {
+        alert('請先輸入座號或暱稱！');
+        document.getElementById('student-nickname').focus();
+        return;
+      }
+      
+      if (userAnswers.includes(null)) {
+        alert('請回答完所有題目後再送出！');
+        return;
+      }
+
+      isGraded = true;
+      let score = 0;
+
+      // Grade
+      for (let i = 0; i < correctAnswers.length; i++) {
+        const qBlock = document.querySelector(`.question-block[data-qindex="${i}"]`);
+        const options = qBlock.querySelectorAll('.option-item');
+        const correctIndex = correctAnswers[i].charCodeAt(0) - 65;
+        const userIndex = userAnswers[i].charCodeAt(0) - 65;
+
+        document.getElementById(`exp-${i}`).style.display = 'block';
+
+        if (userAnswers[i] === correctAnswers[i]) {
+          score += 25;
+          options[correctIndex].classList.add('correct');
+        } else {
+          options[userIndex].classList.add('incorrect');
+          options[correctIndex].classList.add('correct');
+        }
+      }
+
+      const statusDisplay = document.getElementById('status-display');
+      statusDisplay.className = 'status-msg';
+      statusDisplay.style.display = 'block';
+      statusDisplay.textContent = '正在將成績送出至 Firestore 資料庫...';
+
+      if (isFirebaseReady) {
+        try {
+          // Write to dedicated collection to avoid mixing with other apps
+          await addDoc(collection(db, "quiz_lv3_leaderboard"), {
+            nickname: nickname,
+            score: score,
+            timestamp: serverTimestamp(),
+            answers: userAnswers
+          });
+          
+          statusDisplay.className = 'status-msg success';
+          statusDisplay.textContent = '🎉 成績傳送成功！已同步至下方即時排行榜。';
+        } catch (e) {
+          console.error("寫入 Firestore 失敗，切換為模擬模式:", e);
+          statusDisplay.className = 'status-msg error';
+          statusDisplay.textContent = '⚠️ 寫入資料庫失敗（可能安全規則拒絕寫入），已切換為模擬寫入。';
+          simulateWrite(nickname, score);
+        }
+      } else {
+        simulateWrite(nickname, score);
+      }
+
+      document.getElementById('submit-btn').disabled = true;
+      document.getElementById('submit-btn').style.opacity = '0.5';
+      document.getElementById('submit-btn').style.cursor = 'not-allowed';
+    };
+
+    // Real-time listener for Leaderboard
+    if (isFirebaseReady) {
+      const q = query(
+        collection(db, "quiz_lv3_leaderboard"), 
+        orderBy("score", "desc"),
+        orderBy("timestamp", "asc"), // same score, earlier submission wins
+        limit(10)
+      );
+
+      onSnapshot(q, (snapshot) => {
+        const container = document.getElementById('leaderboard-container');
+        container.innerHTML = '';
+        
+        if (snapshot.empty) {
+          container.innerHTML = '<div style="text-align: center; color: var(--text-sub); padding: 1rem;">目前尚無挑戰資料，快來成為第一個吧！</div>';
+          return;
+        }
+
+        let rank = 1;
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          createLeaderboardRow(container, rank, data.nickname, data.score, data.timestamp);
+          rank++;
+        });
+      }, (error) => {
+        console.error("Firestore 監聽失敗，啟動模擬排行榜:", error);
+        startMockLeaderboard();
+      });
+    } else {
+      startMockLeaderboard();
+    }
+
+    // SIMULATION MODE FALLBACKS
+    let mockData = [
+      { nickname: "70102 王小熊", score: 100, timestamp: new Date(Date.now() - 3600000) },
+      { nickname: "70125 李小華", score: 75, timestamp: new Date(Date.now() - 1800000) },
+      { nickname: "70211 陳大明", score: 50, timestamp: new Date(Date.now() - 600000) }
+    ];
+
+    function startMockLeaderboard() {
+      document.getElementById('sync-status').textContent = "模擬排行榜 (無連線)";
+      document.getElementById('sync-status').style.color = "#f97316";
+      document.getElementById('sync-status').style.borderColor = "rgba(249, 115, 22, 0.3)";
+      document.getElementById('sync-status').style.backgroundColor = "rgba(249, 115, 22, 0.1)";
+      renderMockLeaderboard();
+    }
+
+    function renderMockLeaderboard() {
+      const container = document.getElementById('leaderboard-container');
+      container.innerHTML = '';
+      
+      // Sort mockData desc score, asc timestamp
+      mockData.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return a.timestamp - b.timestamp;
+      });
+
+      mockData.forEach((item, index) => {
+        createLeaderboardRow(container, index + 1, item.nickname, item.score, item.timestamp);
+      });
+    }
+
+    function simulateWrite(nickname, score) {
+      mockData.push({
+        nickname: nickname,
+        score: score,
+        timestamp: new Date()
+      });
+      renderMockLeaderboard();
+      const statusDisplay = document.getElementById('status-display');
+      if (!statusDisplay.classList.contains('error')) {
+        statusDisplay.className = 'status-msg success';
+        statusDisplay.textContent = '🎉 模擬模式：成績已加入下方的模擬排行榜中！';
+      }
+    }
+
+    function createLeaderboardRow(parent, rank, nickname, score, timestampVal) {
+      const row = document.createElement('div');
+      row.className = 'leaderboard-item';
+      
+      // Rank classes
+      let rankClass = '';
+      if (rank === 1) rankClass = 'rank-1';
+      else if (rank === 2) rankClass = 'rank-2';
+      else if (rank === 3) rankClass = 'rank-3';
+
+      let timeText = '';
+      if (timestampVal) {
+        const date = timestampVal.toDate ? timestampVal.toDate() : new Date(timestampVal);
+        timeText = date.getHours().toString().padStart(2, '0') + ':' + 
+                   date.getMinutes().toString().padStart(2, '0') + ':' + 
+                   date.getSeconds().toString().padStart(2, '0');
+      }
+
+      row.innerHTML = `
+        <div class="leaderboard-left">
+          <span class="rank ${rankClass}">${rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank}</span>
+          <span class="name">${nickname}</span>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <span class="score">${score} 分</span>
+          <span class="time">${timeText}</span>
+        </div>
+      `;
+      parent.appendChild(row);
+    }
+  </script>
+</body>
+</html>

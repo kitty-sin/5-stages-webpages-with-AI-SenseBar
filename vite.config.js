@@ -9,7 +9,8 @@ export default defineConfig({
         'word-cloud': resolve(__dirname, 'firebase-word-cloud/index.html'),
         'word-cloud-screen': resolve(__dirname, 'firebase-word-cloud/screen.html'),
         'five-levels': resolve(__dirname, 'five-levels/index.html'),
-        'ability-quiz': resolve(__dirname, 'interactive-ability-quiz/index.html')
+        'ability-quiz': resolve(__dirname, 'interactive-ability-quiz/index.html'),
+        'lv3-firebase': resolve(__dirname, 'lv3-firebase/index.html')
       }
     }
   }
