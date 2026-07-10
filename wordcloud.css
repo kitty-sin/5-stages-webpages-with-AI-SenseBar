@@ -246,17 +246,17 @@ h1 span {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: #0b0c10; /* Keep screen darker for theater/projector mode */
-  color: #fff;
+  background-color: var(--bg-main);
+  color: var(--text-main);
   background-image: 
-    radial-gradient(rgba(255, 255, 255, 0.05) 1.5px, transparent 1.5px),
-    linear-gradient(to right, rgba(255, 255, 255, 0.01) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+    radial-gradient(rgba(15, 23, 42, 0.08) 1.5px, transparent 1.5px),
+    linear-gradient(to right, rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
   background-size: 32px 32px, 64px 64px, 64px 64px;
 }
 
 .screen-layout .glow-blob {
-  opacity: 0.25;
+  opacity: 0.15;
 }
 
 .screen-header {
@@ -264,16 +264,16 @@ h1 span {
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  border-bottom: var(--border-width) solid #222533;
-  background: rgba(13, 14, 22, 0.85);
+  border-bottom: var(--border-width) solid var(--border-color);
+  background: rgba(248, 250, 252, 0.85);
   backdrop-filter: blur(10px);
   z-index: 10;
 }
 
 .screen-header h1 {
   font-size: 1.8rem;
-  color: #fff;
-  text-shadow: 2px 2px 0px var(--neon-blue);
+  color: var(--text-main);
+  text-shadow: 2px 2px 0px var(--neon-blue-light);
   margin: 0;
 }
 
@@ -285,13 +285,15 @@ h1 span {
 }
 
 .stat-item {
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid #222533;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
   padding: 6px 14px;
   border-radius: var(--radius-pill);
   display: flex;
   align-items: center;
   gap: 6px;
+  color: var(--text-main);
+  box-shadow: 2px 2px 0px var(--border-color);
 }
 
 .stat-val {
@@ -304,7 +306,7 @@ h1 span {
   position: relative;
   width: 100%;
   overflow: hidden;
-  background: #06070a;
+  background: transparent;
 }
 
 .cloud-word {
@@ -317,12 +319,12 @@ h1 span {
   transition: font-size 0.5s ease, left 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.5s ease;
   user-select: none;
   animation: word-spawn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-  text-shadow: 0px 0px 10px rgba(255,255,255,0.1);
+  text-shadow: 0px 0px 8px rgba(255,255,255,0.7);
 }
 
 .cloud-word:hover {
   transform: translate(-50%, -50%) scale(1.1);
-  text-shadow: 0 0 20px var(--word-color);
+  text-shadow: 0 0 15px var(--word-color), 0 0 5px #fff;
   z-index: 100;
 }
 
@@ -343,30 +345,15 @@ h1 span {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  border-top: var(--border-width) solid #222533;
-  background: rgba(13, 14, 22, 0.95);
+  border-top: var(--border-width) solid var(--border-color);
+  background: rgba(248, 250, 252, 0.95);
   gap: 15px;
   z-index: 10;
 }
 
 .screen-layout .cyber-btn {
-  background: #181922;
-  color: #fff;
-  border-color: #33374b;
   padding: 10px 20px;
   font-size: 0.95rem;
-  box-shadow: 3px 3px 0px #1c1d24;
-}
-
-.screen-layout .cyber-btn:hover {
-  background: #252836;
-  border-color: #4b516e;
-  box-shadow: 5px 5px 0px #1c1d24;
-}
-
-.screen-layout .cyber-btn:active {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0px #1c1d24;
 }
 
 /* Status Notifications */

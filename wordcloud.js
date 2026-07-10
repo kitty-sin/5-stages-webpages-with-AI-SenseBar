@@ -161,13 +161,12 @@ function initScreenPage() {
 
   // Preset Colors for Word Cloud
   const neonColors = [
-    "#00f0ff", // Neon Cyan
-    "#ff2a74", // Neon Pink
-    "#ffe600", // Neon Yellow
+    "#0284c7", // Neon Blue
+    "#db2777", // Neon Pink
+    "#d97706", // Neon Yellow / Orange
     "#059669", // Neon Green
-    "#a855f7", // Purple
-    "#ff5e00", // Orange
-    "#38bdf8", // Sky Blue
+    "#7c3aed", // Neon Purple
+    "#ff5e00", // Bright Orange
     "#f43f5e"  // Rose
   ];
 
