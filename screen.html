@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>即時互動文字雲 ｜ 投影展示大螢幕</title>
+  <meta name="description" content="投影展示大螢幕，實時接收作答字詞並以動態字雲展示。">
+  <link rel="stylesheet" href="/wordcloud.css">
+</head>
+<body style="margin: 0; padding: 0; background-color: #08090d;">
+
+  <div class="screen-layout">
+    <!-- Glow Ambient Blobs -->
+    <div class="glow-blob blob-1" style="width: 500px; height: 500px; opacity: 0.15; top: 10%; left: 10%;"></div>
+    <div class="glow-blob blob-2" style="width: 600px; height: 600px; opacity: 0.15; bottom: 10%; right: 10%;"></div>
+
+    <!-- Screen Header -->
+    <header class="screen-header">
+      <div>
+        <h1>☁️ 班級即時 <span>互動文字雲</span></h1>
+        <p style="margin: 4px 0 0 0; color: #8a8d9e; font-size: 0.88rem; font-weight: 600;">
+          👉 請掃描螢幕上方 QR Code 或輸入網址作答
+        </p>
+      </div>
+
+      <!-- Live Stats Panel -->
+      <div class="stats-panel">
+        <div class="stat-item">
+          <span>📡 網址:</span>
+          <span class="stat-val" id="join-url-display">載入中...</span>
+        </div>
+        <div class="stat-item">
+          <span>🗳️ 總得票數:</span>
+          <span class="stat-val" id="total-submissions-count">0</span>
+        </div>
+        <div class="stat-item">
+          <span>🏷️ 獨特詞彙:</span>
+          <span class="stat-val" id="unique-words-count">0</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cloud Container -->
+    <main class="cloud-container" id="cloud-container">
+      <!-- Words will be dynamically rendered here with absolute positioning -->
+      <div id="cloud-loading" class="flex-center" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; flex-direction: column; gap: 15px; color: #8a8d9e; font-weight: 700;">
+        <div style="font-size: 2rem; animation: float 1.5s ease-in-out infinite;">☁️</div>
+        <div>正在與 Firebase 連線中，等待第一筆回答...</div>
+      </div>
+    </main>
+
+    <!-- Presenter Control Bar -->
+    <footer class="control-bar">
+      <button id="lock-btn" class="cyber-btn">
+        <span id="lock-btn-icon">🔓</span> <span id="lock-btn-text">鎖定作答</span>
+      </button>
+      <button id="clear-btn" class="cyber-btn accent-pink">
+        <span>🗑️</span> 清空文字雲
+      </button>
+      <button id="demo-btn" class="cyber-btn accent-green">
+        <span>⚡</span> 填入示範詞彙
+      </button>
+      <div style="margin-left: auto;">
+        <a href="/" class="cyber-btn" style="padding: 10px 15px; font-size: 0.85rem; font-weight: 700;">
+          ✏️ 前往學生作答端
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="notification" id="toast">
+    <span id="toast-icon">✓</span>
+    <span id="toast-text">成功！</span>
+  </div>
+
+  <script type="module" src="/wordcloud.js"></script>
+</body>
+</html>

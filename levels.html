@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教學應用程式的五個等級｜學習筆記｜</title>
+  <meta name="description" content="寫教學工具的五種架構，以及你該停在哪一階。為您量身打造的霓彩科創動漫風學習筆記。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating Glow Ambient Lights -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+  <div class="glow-blob blob-3"></div>
+
+  <div class="container">
+    
+    <!-- Header Section -->
+    <header class="header-wrapper">
+      <div class="hero-banner">
+        <img src="assets/banner.png" alt="Cyber Anime Classroom Banner">
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <div class="eyebrow">
+          <span class="cyber-badge">NOTE</span>
+          <span> Yoda ｜ 影片學習筆記</span>
+        </div>
+        <h1>教學應用程式的 <span>五個等級</span></h1>
+        <p class="sub">你不用把後端、資料庫、AI 全部學會。這頁幫你複習：寫教學工具的五種架構，以及你的工具該停在哪一階——剛好夠用，最省力。</p>
+        <div class="hero-cta">
+          <span class="cta-icon">📺</span>
+          <span>這是影片的搭配筆記，建議看完影片再回來複習、或邊做邊對照。</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Core Question Section -->
+    <section>
+      <div class="qa-callout">
+        <h3>先問自己一個核心問題</h3>
+        <p>很多老師卡在「我要不要學後端？要不要碰 Firebase？」——其實問錯了。真正該問的是：</p>
+        <blockquote class="pane-quote">
+          「這個工具需不需要『記住』東西？要不要 AI 幫忙思考？」
+        </blockquote>
+        <p style="margin-top: 15px; font-weight: 600;">把這題想清楚，就知道該爬到第幾階。<strong>不是越高級越厲害，是剛好夠用最厲害。</strong></p>
+      </div>
+    </section>
+
+    <!-- Interactive Level Finder Tool -->
+    <section id="finder-section">
+      <h2 class="sec-title">🧭 我該爬到第幾階？</h2>
+      <div class="finder-card">
+        <div class="finder-header">
+          <h3><span>🤖</span> AI 級別定位雷達</h3>
+          <div class="finder-status" id="finder-progress">STEP 1 OF 3</div>
+        </div>
+        <div class="finder-body">
+          
+          <!-- Step 1: Storage -->
+          <div class="finder-step active" id="step-1">
+            <div class="finder-question"><b>Q1.</b> 這個工具需要把資料<strong>存下來</strong>嗎？<br><small style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">（關掉網頁重開後，資料還需要存在嗎？）</small></div>
+            <div class="finder-options">
+              <button class="finder-btn yes" onclick="answerQuestion(1, true)">需要存資料</button>
+              <button class="finder-btn no" onclick="answerQuestion(1, false)">算一次看一次就好</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Realtime (Storage Flow) -->
+          <div class="finder-step" id="step-2">
+            <div class="finder-question"><b>Q2.</b> 需要<strong>很多人同時使用、且即時更新</strong>嗎？<br><small style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">（例如：即時搶答排行榜、全班共編看進度）</small></div>
+            <div class="finder-options">
+              <button class="finder-btn yes" onclick="answerQuestion(2, true)">需要即時/多人</button>
+              <button class="finder-btn no" onclick="answerQuestion(2, false)">課後我自己開表格看就好</button>
+            </div>
+          </div>
+
+          <!-- Step 3: AI (No-Storage Flow) -->
+          <div class="finder-step" id="step-3">
+            <div class="finder-question"><b>Q3.</b> 需要 AI 幫你<strong>思考、批改或對話</strong>嗎？<br><small style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">（例如：開放式問答批改、對話練習）</small></div>
+            <div class="finder-options">
+              <button class="finder-btn yes" onclick="answerQuestion(3, true)">需要 AI 幫忙</button>
+              <button class="finder-btn no" onclick="answerQuestion(3, false)">不需要 AI</button>
+            </div>
+          </div>
+
+          <!-- Step 4: AI (Storage Realtime Flow) -->
+          <div class="finder-step" id="step-4">
+            <div class="finder-question"><b>Q4.</b> 需要 AI 幫你<strong>思考、批改或對話</strong>嗎？<br><small style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">（例如：AI 評分與個人化弱點分析）</small></div>
+            <div class="finder-options">
+              <button class="finder-btn yes" onclick="answerQuestion(4, true)">需要 AI 幫忙</button>
+              <button class="finder-btn no" onclick="answerQuestion(4, false)">不需要 AI</button>
+            </div>
+          </div>
+
+          <!-- Step 5: AI (Storage Non-Realtime Flow) -->
+          <div class="finder-step" id="step-5">
+            <div class="finder-question"><b>Q5.</b> 需要 AI 幫你<strong>思考、批改或對話</strong>嗎？<br><small style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">（例如：課後作業 AI 自動閱卷）</small></div>
+            <div class="finder-options">
+              <button class="finder-btn yes" onclick="answerQuestion(5, true)">需要 AI 幫忙</button>
+              <button class="finder-btn no" onclick="answerQuestion(5, false)">不需要 AI</button>
+            </div>
+          </div>
+
+          <!-- Result Area -->
+          <div class="finder-step" id="step-result">
+            <div class="finder-result">
+              <div class="result-eyebrow">檢測結果 ｜ 您的最佳停靠站</div>
+              <div class="result-level-box" id="result-theme-box">
+                <div class="result-level-title" id="result-lv-title">Lv.3 前端 + Firebase</div>
+                <div class="result-level-sub" id="result-lv-sub">即時競賽版</div>
+              </div>
+              <div class="result-desc" id="result-desc">
+                適合需要全班同步、即時排行榜或是多人協作的場景。
+              </div>
+              <div class="result-actions">
+                <button class="cyber-btn accent-blue" onclick="resetFinder()">重新檢測 🧭</button>
+                <a href="#levels-section" class="cyber-btn accent-pink" id="view-details-btn" onclick="scrollToLevel(3)">查看此級別詳解 📂</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="finder-footer-note">
+        <div class="note-icon">💡</div>
+        <p><strong>特別注意：</strong><br>
+        ① <strong>Lv.2 和 Lv.3 是兩條不同的岔路，不是單純的升級關係</strong>，別因為 Firebase 聽起來高級就硬上。<br>
+        ② <strong>Lv.4 沒有資料庫不代表比 Lv.3 低</strong>——它是另一條「AI 軸」的起點，Lv.5 才把資料庫與 AI 合而為一。</p>
+      </div>
+    </section>
+
+    <!-- Restaurant Metaphor Section -->
+    <section>
+      <h2 class="sec-title">🍽️ 先把名詞講人話（餐廳比喻）</h2>
+      <p style="margin-bottom: 25px; font-weight: 500;">如果把開發應用程式比喻成開一間餐廳，那麼各個角色分工如下：</p>
+      <div class="restaurant-grid">
+        <!-- Front -->
+        <div class="restaurant-card">
+          <div class="card-role-icon">💁‍♂️</div>
+          <h3>前端</h3>
+          <span class="role-badge badge-front">服務生</span>
+          <p class="desc">負責在最前線面對顧客，提供菜單並送餐。也就是你在網頁畫面上看到、能點擊和操作的所有視覺與互動按鈕。</p>
+        </div>
+        <!-- Back -->
+        <div class="restaurant-card">
+          <div class="card-role-icon">👨‍🍳</div>
+          <h3>後端</h3>
+          <span class="role-badge badge-back">廚房</span>
+          <p class="desc">負責處理核心料理與指令。把服務生送來的訂單，在內部進行運算與資料整合，並能安全地隱藏私密鑰匙。</p>
+        </div>
+        <!-- DB -->
+        <div class="restaurant-card">
+          <div class="card-role-icon">📦</div>
+          <h3>資料庫</h3>
+          <span class="role-badge badge-db">儲藏室 / 冰箱</span>
+          <p class="desc">負責把食材與剩菜好好存儲起來。當顧客再次光臨時，資料依然存在，不會因為網頁關閉而遺失。</p>
+        </div>
+        <!-- AI -->
+        <div class="restaurant-card">
+          <div class="card-role-icon">🤖</div>
+          <h3>AI</h3>
+          <span class="role-badge badge-ai">米其林顧問</span>
+          <p class="desc">外部請來的超強顧問，會即時思考、分析、給出評語。Lv.4 是顧問講完即走，Lv.5 是講完還寫成病歷存進儲藏室。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Level Breakdown Section -->
+    <section id="levels-section">
+      <h2 class="sec-title">🎬 同一份小考，五種架構演進</h2>
+      <p style="margin-bottom: 25px; font-weight: 500;">與其死記五種架構，不如看<strong>同一個「隨堂小考」</strong>怎麼一階一階長大。每爬一階，只多<strong>一個</strong>新能力：</p>
+      
+      <!-- Interactive Tabs -->
+      <div class="level-navigator">
+        <button class="nav-tab active" data-target="lv1">
+          <span class="tab-lv">Lv.1</span>
+          <span class="tab-label">純前端</span>
+        </button>
+        <button class="nav-tab" data-target="lv2">
+          <span class="tab-lv">Lv.2</span>
+          <span class="tab-label">＋Sheets</span>
+        </button>
+        <button class="nav-tab" data-target="lv3">
+          <span class="tab-lv">Lv.3</span>
+          <span class="tab-label">＋Firebase</span>
+        </button>
+        <button class="nav-tab" data-target="lv4">
+          <span class="tab-lv">Lv.4</span>
+          <span class="tab-label">＋AI</span>
+        </button>
+        <button class="nav-tab" data-target="lv5">
+          <span class="tab-lv">Lv.5</span>
+          <span class="tab-label">＋AI＋資料庫</span>
+        </button>
+      </div>
+
+      <!-- Level Content Box -->
+      <div class="level-content-box lv1-theme" id="level-content-box">
+        
+        <!-- Level 1 Pane -->
+        <div class="level-pane active" id="pane-lv1">
+          <div class="level-pane-header">
+            <div class="pane-title-group">
+              <h2>Lv.1 純前端 <span>📝</span></h2>
+              <p>「自我練習版」隨堂小考</p>
+            </div>
+            <span class="pane-level-pill">算完就忘</span>
+          </div>
+          <div class="pane-concept-card">
+            <span class="concept-icon">💡</span>
+            <div>
+              <div class="concept-text">網頁出 10 題，學生自己作答，當場看對幾題、看詳解。</div>
+              <div class="concept-add">漂亮又即時，但「關掉就忘」，老師拿不到任何成績。</div>
+            </div>
+          </div>
+          <div class="pane-grid">
+            <div class="pane-col">
+              <h3><span>🎯</span> 可以做什麼</h3>
+              <ul class="pane-list todo-list">
+                <li>計算器、隨機抽籤、座標獵人等網頁小遊戲</li>
+                <li>互動式教材、物理模擬動畫、幾何演示工具</li>
+              </ul>
+            </div>
+            <div class="pane-col">
+              <h3><span>💎</span> 好處</h3>
+              <ul class="pane-list pros-list">
+                <li>最簡單：只需一個 HTML 檔案，免帳號免伺服器</li>
+                <li>免費、零維護，上傳即可使用，上線只要幾秒</li>
+                <li>極安全：資料完全不離開使用者的瀏覽器</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <h3><span>⚠️</span> 限制</h3>
+            <ul class="pane-list cons-list">
+              <li>關掉重開即恢復初始狀態，無法將資料留存</li>
+              <li>老師完全看不到學生做了什麼，無法進行課後統計</li>
+            </ul>
+          </div>
+          <blockquote class="pane-quote">
+            💬 點評：如果只是想當場算一次、看一次，留在 Lv.1 最輕鬆！
+          </blockquote>
+        </div>
+
+        <!-- Level 2 Pane -->
+        <div class="level-pane" id="pane-lv2">
+          <div class="level-pane-header">
+            <div class="pane-title-group">
+              <h2>Lv.2 前端 ＋ Google Sheets <span>📊</span></h2>
+              <p>「課後回收版」隨堂小考</p>
+            </div>
+            <span class="pane-level-pill">寫進試算表</span>
+          </div>
+          <div class="pane-concept-card">
+            <span class="concept-icon">➕</span>
+            <div>
+              <div class="concept-text">學生按「送出」，座號和分數自動寫進你的 Google 試算表。</div>
+              <div class="concept-add">多了：把成績存下來（老師課後打開，成績一目了然，方便算平均）。</div>
+            </div>
+          </div>
+          <div class="pane-grid">
+            <div class="pane-col">
+              <h3><span>🎯</span> 可以做什麼</h3>
+              <ul class="pane-list todo-list">
+                <li>線上點名系統、課堂回饋收集、學生成績登錄表</li>
+                <li>任何「收一收、之後我自己打開來看」的非即時表單</li>
+              </ul>
+            </div>
+            <div class="pane-col">
+              <h3><span>💎</span> 好處</h3>
+              <ul class="pane-list pros-list">
+                <li>資料直接落在最熟的試算表，打開就能排序、畫圖與匯出</li>
+                <li>不用學習複雜的資料庫安全規則，維護門檻低</li>
+                <li>完全免費</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <h3><span>⚠️</span> 限制</h3>
+            <ul class="pane-list cons-list">
+              <li>不是即時的，不適合進行秒級的多人同步搶答</li>
+              <li>當人數過多、同時寫入時，容易發生卡頓或失敗</li>
+              <li>累積資料量極大時，讀寫速度會明顯變慢</li>
+            </ul>
+          </div>
+          <blockquote class="pane-quote">
+            💬 點評：資料量不大、不需要即時互動、只想自己課後靜靜看試算表 → Lv.2 是最舒服的選擇。
+          </blockquote>
+        </div>
+
+        <!-- Level 3 Pane -->
+        <div class="level-pane" id="pane-lv3">
+          <div class="level-pane-header">
+            <div class="pane-title-group">
+              <h2>Lv.3 前端 ＋ Firebase <span>⚡</span></h2>
+              <p>「即時競賽版」隨堂小考</p>
+            </div>
+            <span class="pane-level-pill">即時 · 多人 · 自動同步</span>
+          </div>
+          <div class="pane-concept-card">
+            <span class="concept-icon">➕</span>
+            <div>
+              <div class="concept-text">學生一送出答案，大螢幕排行榜立刻跳動更新，全班同時玩也不卡。</div>
+              <div class="concept-add">多了：即時多人同步（從「課後靜態查看」升級成「當場即時互動」）。</div>
+            </div>
+          </div>
+          <div class="pane-grid">
+            <div class="pane-col">
+              <h3><span>🎯</span> 可以做什麼</h3>
+              <ul class="pane-list todo-list">
+                <li>即時搶答排行榜、課堂互動白板、即時全班作答率統計</li>
+                <li>一人一碼的派題系統、多端即時同步協作工具</li>
+              </ul>
+            </div>
+            <div class="pane-col">
+              <h3><span>💎</span> 好處</h3>
+              <ul class="pane-list pros-list">
+                <li>真正的毫秒級即時同步，多人連線效能優異</li>
+                <li>完美契合「即時搶答、即時回饋」的教學課堂氣氛</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <h3><span>⚠️</span> 限制與安全指引</h3>
+            <ul class="pane-list cons-list">
+              <li>需要編寫 Firebase 安全規則，若沒寫好等於資料庫對全世界大門敞開！</li>
+              <li>建立專案與憑證設定有一定的學習曲線</li>
+              <li>資料結構不像 Excel 般直觀，通常需要另建老師後台或匯出工具才能看懂</li>
+              <li><strong>重要規範：</strong>記得將學生個資去識別化（用代號/座號，不要存真實姓名）</li>
+            </ul>
+          </div>
+          <blockquote class="pane-quote">
+            💬 點評：只在真正需要「多人同時、秒級即時更新」時才值得爬到 Lv.3。如果只是要收個表單，用 Firebase 屬於殺雞用牛刀。
+          </blockquote>
+        </div>
+
+        <!-- Level 4 Pane -->
+        <div class="level-pane" id="pane-lv4">
+          <div class="level-pane-header">
+            <div class="pane-title-group">
+              <h2>Lv.4 前端 ＋ 後端 ＋ AI <span>🧠</span></h2>
+              <p>「AI 即時講解版」隨堂小考</p>
+            </div>
+            <span class="pane-level-pill">安全調用 AI · 用完即走</span>
+          </div>
+          <div class="pane-concept-card">
+            <span class="concept-icon">➕</span>
+            <div>
+              <div class="concept-text">加入問答題，學生按「請 AI 批改」，AI 即時判對錯、給回饋，但不儲存紀錄。</div>
+              <div class="concept-add">多了：AI 能理解與批改開放式答案（先學會安全用 AI，此階暫不接資料庫）。</div>
+            </div>
+          </div>
+          
+          <div class="pane-grid">
+            <div class="pane-col">
+              <h3><span>🎯</span> 可以做什麼</h3>
+              <ul class="pane-list todo-list">
+                <li>AI 即時批改開放式簡答、即時外語口說/作文糾錯</li>
+                <li>課堂即時生成情境問答、當下互動對話機器人</li>
+              </ul>
+            </div>
+            <div class="pane-col">
+              <h3><span>💎</span> 好處</h3>
+              <ul class="pane-list pros-list">
+                <li>擺脫選擇題限制，可考查學生的開放式思考與論述能力</li>
+                <li>學生能即時獲得專屬回饋，免去老師逐份批改的等待時間</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Critical Security Warning for Level 4 -->
+          <div class="key-box-warning">
+            <h3><span>🚨</span> 核心命脈：API Key 絕不能洩漏在前端！</h3>
+            <p>使用 AI (如 Gemini/OpenAI API) 需要一把私密金鑰 (API Key)。最常見也最危險的錯誤，就是直接把它寫在網頁 (HTML/JS) 裡下載給瀏覽器。</p>
+            <pre><code>❌ 寫在前端：金鑰會下載到所有學生的電腦，按 F12 原始碼就直接看光光 → 容易被盜刷爆單！
+✅ 透過後端：金鑰安全地藏在伺服器，網頁向後端發送請求，後端拿著 key 去找 AI，最後只回傳「答案文字」給網頁。</code></pre>
+            <p style="margin-top: 15px;"><strong>實務低門檻解法：</strong> 使用 <strong>Netlify Functions</strong> 作為極簡後端，將 API Key 設在 Netlify 的環境變數 (Environment Variables)，即可安全調用 AI！</p>
+            
+            <h4 style="margin: 20px 0 10px; color: var(--neon-pink);">🔒 安全防線的兩層防禦：</h4>
+            <div class="table-wrapper" style="box-shadow: none; border-width: 2px;">
+              <table style="font-size: 0.88rem;">
+                <thead>
+                  <tr>
+                    <th>安全威脅</th>
+                    <th class="c">API Key 放前端</th>
+                    <th class="c">放後端代打 (Netlify)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>金鑰被小偷竊取 (永久財產損失)</td>
+                    <td class="c status-n">🔴 會被偷</td>
+                    <td class="c status-y">✅ 絕對安全</td>
+                  </tr>
+                  <tr>
+                    <td>介面被陌生人惡意狂刷 (額度被燒光)</td>
+                    <td class="c status-n">🔴 會被刷</td>
+                    <td class="c" style="color: var(--neon-yellow); font-weight: 800;">⚠️ 仍有可能 (需防禦)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="margin-top: 12px; font-size: 0.88rem; color: var(--text-muted);">* 註：為了防止後端 API 被狂刷，可以在前端網頁加一道「課堂暗號/通行碼」，只有輸入正確的人才能向後端發送 AI 請求。</p>
+          </div>
+
+          <!-- AI Type Intro -->
+          <div style="margin-top: 30px;">
+            <h3><span>🤖</span> 釐清：教學上常應用的 AI 模組</h3>
+            <div class="table-wrapper" style="box-shadow: none; border-width: 2px;">
+              <table style="font-size: 0.88rem;">
+                <thead>
+                  <tr>
+                    <th>AI 模組</th>
+                    <th>運作機制</th>
+                    <th>教學應用場景</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>文字 LLM / Chat</strong></td>
+                    <td>理解與生成自然語言</td>
+                    <td>作文批改、自動出題、對話練習、外文摘要</td>
+                  </tr>
+                  <tr>
+                    <td><strong>STT 語音轉文字</strong></td>
+                    <td>將「音訊」辨識為「文字」</td>
+                    <td>口說語音評量、上課錄音自動轉為逐字稿</td>
+                  </tr>
+                  <tr>
+                    <td><strong>TTS 文字轉語音</strong></td>
+                    <td>將「文字」合成出「擬真聲音」</td>
+                    <td>自動朗讀聽力教材、無障礙語音輔助</td>
+                  </tr>
+                  <tr>
+                    <td><strong>OCR / 影像辨識</strong></td>
+                    <td>辨識並讀懂「圖片/手寫文字」</td>
+                    <td>拍下手寫考卷自動轉數位檔、手寫算式辨識</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <blockquote class="pane-quote" style="margin-top: 25px;">
+            💬 點評：只要當下用一下 AI，算完直接回傳，完全不留存紀錄與數據統計 → 停在 Lv.4 最合適。
+          </blockquote>
+        </div>
+
+        <!-- Level 5 Pane -->
+        <div class="level-pane" id="pane-lv5">
+          <div class="level-pane-header">
+            <div class="pane-title-group">
+              <h2>Lv.5 前端 ＋ 後端 ＋ 資料庫 ＋ AI <span>👑</span></h2>
+              <p>「AI 學習歷程版」隨堂小考</p>
+            </div>
+            <span class="pane-level-pill">會思考又會記住</span>
+          </div>
+          <div class="pane-concept-card">
+            <span class="concept-icon">➕</span>
+            <div>
+              <div class="concept-text">AI 批改完問答題，把分數和詳細評語「寫進資料庫」永久保存。</div>
+              <div class="concept-add">多了：把 AI 生成的結果存下來（老師能看到學生的成長曲線與個人化弱點診斷）。</div>
+            </div>
+          </div>
+          
+          <div class="pane-grid">
+            <div class="pane-col">
+              <h3><span>🎯</span> 可以做什麼</h3>
+              <ul class="pane-list todo-list">
+                <li>AI 家教對話歷程紀錄（隨時可以接續上次對話）</li>
+                <li>自動化學習歷程檔案生成、長期學習弱點診斷報告</li>
+                <li>個人化自適應派題系統（依據歷次 AI 診斷結果動態調整考題）</li>
+              </ul>
+            </div>
+            <div class="pane-col">
+              <h3><span>💎</span> 好處</h3>
+              <ul class="pane-list pros-list">
+                <li>會思考又會記住：完美結合 AI 的智慧與資料庫的記憶力</li>
+                <li>實現完全閉環的學習歷程追蹤，教學數據完整且具備研究價值</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Feature Combo Demo -->
+          <div class="key-box-warning" style="border-color: var(--neon-purple); background: var(--neon-purple-light);">
+            <h3 style="color: var(--neon-purple);"><span>🔥</span> 高級組合招：教學工具一條龍！</h3>
+            <p>將多個模組串聯，可以打造出驚艷的學習工具：</p>
+            <pre><code>步驟 1：學生拍下手寫作業照片 (OCR 影像辨識) ➜ 讀取成數位文字
+步驟 2：發送至後端調用 AI ➜ AI 自動批改，給出詳細訂正建議與評語
+步驟 3：將批改結果「寫入資料庫保存」 (★這步是 Lv.5 核心關鍵★)
+步驟 4：前端讀取評語並唸出來 (TTS 文字轉語音) ➜ 學生能聽也能看！</code></pre>
+          </div>
+
+          <div style="margin-top: 30px;">
+            <h3><span>⚠️</span> 責任與挑戰</h3>
+            <ul class="pane-list cons-list">
+              <li><strong>工程量最大：</strong>前端、後端、AI、資料庫四個節點，需要全部熟悉與維護。</li>
+              <li><strong>個資保護極關鍵：</strong>AI 調用加上「儲存學生學習軌跡」，必須嚴格遵守隱私權政策，進行去識別化，並留意個資保存期限。</li>
+              <li><strong>成本控制與監控：</strong>AI 與資料庫雙重消耗，需要更精細的監控，避免爆額度或被惡意攻擊。</li>
+            </ul>
+          </div>
+          <blockquote class="pane-quote">
+            💬 點評：需要長期追蹤學生的 AI 評量數據，並進行統計分析時，才值得衝上 Lv.5。爬得越高，责任越大！
+          </blockquote>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Comparison Matrix Section -->
+    <section>
+      <h2 class="sec-title">📊 五個等級功能矩陣</h2>
+      <p style="margin-bottom: 25px; font-weight: 500;">快速對比各個等級的指標，幫助你做出最佳決策：</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>比較維度</th>
+              <th class="c">Lv.1 純前端</th>
+              <th class="c">Lv.2 +Sheets</th>
+              <th class="c">Lv.3 +Firebase</th>
+              <th class="c">Lv.4 +AI</th>
+              <th class="c">Lv.5 +AI+資料庫</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>開發難度</strong></td>
+              <td class="c"><span class="td-lv-badge td-lv1">⭐</span></td>
+              <td class="c"><span class="td-lv-badge td-lv2">⭐⭐</span></td>
+              <td class="c"><span class="td-lv-badge td-lv3">⭐⭐⭐</span></td>
+              <td class="c"><span class="td-lv-badge td-lv4">⭐⭐⭐⭐</span></td>
+              <td class="c"><span class="td-lv-badge td-lv5">⭐⭐⭐⭐⭐</span></td>
+            </tr>
+            <tr>
+              <td><strong>資料存儲</strong></td>
+              <td class="c status-n">✗</td>
+              <td class="c status-y">✓</td>
+              <td class="c status-y">✓</td>
+              <td class="c status-n">✗</td>
+              <td class="c status-y">✓</td>
+            </tr>
+            <tr>
+              <td><strong>即時多人同步</strong></td>
+              <td class="c" style="color: var(--text-muted);">—</td>
+              <td class="c" style="color: var(--neon-pink); font-weight: 700;">較弱</td>
+              <td class="c" style="color: var(--neon-green); font-weight: 700;">極強</td>
+              <td class="c" style="color: var(--text-muted);">取決於後端</td>
+              <td class="c" style="color: var(--text-muted);">取決於後端</td>
+            </tr>
+            <tr>
+              <td><strong>內置 AI 思考</strong></td>
+              <td class="c status-n">✗</td>
+              <td class="c status-n">✗</td>
+              <td class="c status-n">✗</td>
+              <td class="c status-y">✓</td>
+              <td class="c status-y">✓</td>
+            </tr>
+            <tr>
+              <td><strong>營運費用</strong></td>
+              <td class="c" style="color: var(--neon-green); font-weight: 700;">完全免費</td>
+              <td class="c" style="color: var(--neon-green); font-weight: 700;">完全免費</td>
+              <td class="c" style="color: var(--neon-green); font-weight: 700;">有免費用量</td>
+              <td class="c" style="color: var(--neon-pink); font-weight: 700;">按 token 收費</td>
+              <td class="c" style="color: var(--neon-pink); font-weight: 700;">按 token 收費</td>
+            </tr>
+            <tr>
+              <td><strong>開發防禦重點</strong></td>
+              <td class="c" style="color: var(--text-muted);">—</td>
+              <td class="c" style="color: var(--text-muted);">寫入容易延遲</td>
+              <td class="c" style="color: var(--neon-pink); font-weight: 700;">資料安全規則</td>
+              <td class="c" style="color: var(--neon-pink); font-weight: 700;">Key安全/防刷</td>
+              <td class="c" style="color: var(--neon-pink); font-weight: 700;">四端安全/個資</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote class="pane-quote" style="margin-top: 25px;">
+        💡 <strong>一句話帶走：</strong>每多爬一階，你就多解決一個痛點，但也需要多扛一份防禦與維護責任。先想清楚需求，再決定你的工具停在哪一階。
+      </blockquote>
+    </section>
+
+    <!-- References & Deep Dive Links -->
+    <section>
+      <h2 class="sec-title">🌐 延伸探索與資源</h2>
+      <div class="references-grid">
+        <div class="ref-card">
+          <div>
+            <h3>前端與後端、基本網站架構</h3>
+            <p>寫給非工程師的基礎概念：什麼是網頁前端與後端？它們是如何分工並架起一個網站的？</p>
+          </div>
+          <a href="https://pala.tw/frontend-backend-basic/" target="_blank" class="ref-link">閱讀 Pala.tw 文章 ➜</a>
+        </div>
+        
+        <div class="ref-card">
+          <div>
+            <h3>為什麼 Firebase 這麼紅</h3>
+            <p>詳細解析 Firebase 的即時資料庫與雲端功能，了解它如何大幅降低前端工程師涉足後端的門檻。</p>
+          </div>
+          <a href="https://litotom.com/2017/07/18/why-firebase-2/" target="_blank" class="ref-link">閱讀綠豆湯學院 ➜</a>
+        </div>
+
+        <div class="ref-card">
+          <div>
+            <h3>讓 Google Sheets 當你的後端</h3>
+            <p>手把手教學：如何使用簡單的前端 JavaScript 把網頁表單資料安全地寫入 Google 試算表中。</p>
+          </div>
+          <a href="https://medium.com/unalai/%E5%AF%AB%E7%B5%A6%E7%B4%94%E5%89%8D%E7%AB%AF-%E8%AE%93-google-sheets-%E7%95%B6%E4%BD%A0%E7%9A%84%E5%BE%8C%E7%AB%AF%E5%AE%8C%E6%88%90%E5%AF%AB%E5%85%A5%E5%8A%9F%E8%83%BD-715799e5e013" target="_blank" class="ref-link">閱讀 Medium ➜</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-logo">Yoda</div>
+      <p>教學應用程式的五個等級 ｜ 影片學習筆記網頁版</p>
+      <p style="font-size: 0.8rem; margin-top: 10px;"> ⚡ 霓彩科創動漫風改版 © 2026</p>
+    </footer>
+
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

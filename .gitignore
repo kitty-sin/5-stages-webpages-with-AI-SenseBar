@@ -1,0 +1,20 @@
+# Node dependencies
+node_modules/
+
+# Production build output
+dist/
+
+# Firebase temporary files
+.firebase/
+*firebase-debug.log*
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Agent configuration and logs
+.gemini/
+.agents/
+walkthrough.md
+task.md
+implementation_plan.md

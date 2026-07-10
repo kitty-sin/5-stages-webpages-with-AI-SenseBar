@@ -1,0 +1,14 @@
+{
+  "name": "sensebar-five-levels-neon-anime",
+  "version": "1.0.0",
+  "description": "Sense Bar - Five Levels of Educational Apps - Neon Cyber-Anime Bright Theme",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
