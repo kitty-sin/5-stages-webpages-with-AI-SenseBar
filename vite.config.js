@@ -6,9 +6,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        screen: resolve(__dirname, 'screen.html'),
-        levels: resolve(__dirname, 'levels.html'),
-        quiz: resolve(__dirname, 'lv2-google-sheets/index.html')
+        'word-cloud': resolve(__dirname, 'firebase-word-cloud/index.html'),
+        'word-cloud-screen': resolve(__dirname, 'firebase-word-cloud/screen.html'),
+        'five-levels': resolve(__dirname, 'five-levels/index.html'),
+        'ability-quiz': resolve(__dirname, 'interactive-ability-quiz/index.html')
       }
     }
   }

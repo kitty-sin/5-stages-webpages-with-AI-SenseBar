@@ -2,14 +2,37 @@
 
 GitHub Repository: kitty-sin/5-stages-webpages-with-AI-SenseBar
 
+------------------
+
+文字雲
 Live Deployed App (Student Mode): 
 https://stages-webpages-ai-sensebar.web.app
 
 Live Deployed App (Screen Mode): 
 https://stages-webpages-ai-sensebar.web.app/screen.html
 
+------------------
+教學應用程式的 五個等級
 Original Educational Levels Guide: 
 https://stages-webpages-ai-sensebar.web.app/levels.html
 
+------------------
+
 教學應用程式的五個等級 by 三師爸 Sense Bar: 
 https://senseba-five-levels.netlify.app/
+
+------------------
+
+互動式能力階梯測驗 - Lv.2
+
+Netlify:
+https://6a508f6279c68d65d05d9d98--5-stages-ability-quiz.netlify.app/
+
+Google Sheet:
+https://docs.google.com/spreadsheets/d/1v4kwQzU4XA6lB6YGXDzoVVav9v5z3e4tRPk-sBMg4Fo/edit?gid=0#gid=0
+
+App Script:
+https://script.google.com/home/projects/1RKw50Fk7Tdp1TdKgKkwc0-HsOa6oLWiWNOesN5Ke8KlnJE1wWzG-rVw2/edit
+
+------------------
+

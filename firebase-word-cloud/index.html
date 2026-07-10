@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>即時互動文字雲 ｜ 學生作答端</title>
+  <meta name="description" content="用 Firebase 打造的實時文字雲，輸入你想說的話，大螢幕立刻動態更新！">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating Glow Ambient Lights -->
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header-wrapper">
+      <div class="cyber-badge">✏️ STUDENT MODE</div>
+      <h1>即時互動 <span>文字雲</span></h1>
+      <p class="sub">在下方框中輸入你的詞彙，送出後會立刻出現在大螢幕的文字雲中！</p>
+    </header>
+
+    <!-- Submission Card -->
+    <main class="cyber-card" style="position: relative;" id="submission-card">
+      
+      <!-- Lock Overlay (Shown when presenter locks submissions) -->
+      <div class="lock-overlay" id="lock-screen" style="display: none;">
+        <div class="lock-icon">🔒</div>
+        <h2>作答已暫停</h2>
+        <p style="color: var(--text-muted); font-weight: 500;">主講人已鎖定作答，請注意投影大螢幕！</p>
+      </div>
+
+      <div class="card-title">
+        <span>💬</span> 輸入詞彙
+      </div>
+
+      <form id="submission-form" onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label" for="word-input">填寫你的答案（最多 15 個字）：</label>
+          <input 
+            type="text" 
+            id="word-input" 
+            class="cyber-input" 
+            placeholder="例如：科技、AI、好玩..." 
+            maxlength="15" 
+            required 
+            autocomplete="off"
+          >
+        </div>
+
+        <button type="submit" id="submit-btn" class="cyber-btn accent-blue" style="width: 100%;">
+          <span>🚀</span> 送出答案
+        </button>
+      </form>
+
+      <div class="mt-4" id="recent-submissions-container" style="display: none; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
+        <div class="recent-list-title">⏱️ 你剛才送出的答案：</div>
+        <div class="word-tag-container" id="recent-words-list">
+          <!-- Tags injected dynamically -->
+        </div>
+      </div>
+    </main>
+
+    <!-- Navigation / Help Footer -->
+    <footer class="text-center">
+      <div class="footer-links">
+        <a href="screen.html" class="footer-link">💻 切換至投影大螢幕端 (Screen)</a>
+        <span>•</span>
+        <a href="../five-levels/index.html" class="footer-link">📚 教學應用程式五個等級筆記</a>
+      </div>
+      <p style="margin-top: 20px; font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">
+        Powered by Firebase Cloud Firestore & Vite
+      </p>
+    </footer>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="notification" id="toast">
+    <span id="toast-icon">✓</span>
+    <span id="toast-text">成功！</span>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
