@@ -18,3 +18,6 @@ Thumbs.db
 walkthrough.md
 task.md
 implementation_plan.md
+
+# Local Netlify folder
+.netlify

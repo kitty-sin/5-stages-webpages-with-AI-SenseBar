@@ -213,3 +213,9 @@ function scrollToLevel(levelNum) {
     }, 50);
   }
 }
+
+// Bind functions to window object for access from HTML inline onclick event handlers
+window.answerQuestion = answerQuestion;
+window.resetFinder = resetFinder;
+window.scrollToLevel = scrollToLevel;
+

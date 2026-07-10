@@ -3,6 +3,7 @@
     "rules": "firestore.rules"
   },
   "hosting": {
+    "site": "stages-webpages-ai-sensebar",
     "public": "dist",
     "ignore": [
       "firebase.json",

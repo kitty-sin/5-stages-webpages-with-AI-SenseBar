@@ -1,0 +1,15 @@
+🚀 Live Links
+
+GitHub Repository: kitty-sin/5-stages-webpages-with-AI-SenseBar
+
+Live Deployed App (Student Mode): 
+https://stages-webpages-ai-sensebar.web.app
+
+Live Deployed App (Screen Mode): 
+https://stages-webpages-ai-sensebar.web.app/screen.html
+
+Original Educational Levels Guide: 
+https://stages-webpages-ai-sensebar.web.app/levels.html
+
+教學應用程式的五個等級 by 三師爸 Sense Bar: 
+https://senseba-five-levels.netlify.app/

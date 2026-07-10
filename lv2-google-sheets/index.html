@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lv.2 Google Sheets 試算表後端測驗 - 課後回收版</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: rgba(30, 41, 59, 0.75);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      
+      --neon-cyan: #06b6d4;
+      --neon-green: #10b981;
+      --neon-orange: #f97316;
+      --neon-red: #ef4444;
+      --neon-purple: #8b5cf6;
+      --neon-yellow: #eab308;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(249, 115, 22, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+      background-attachment: fixed;
+      font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--neon-orange);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 850px;
+      z-index: 10;
+    }
+
+    .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      border: 1px solid var(--border-color);
+    }
+
+    .back-btn:hover {
+      color: var(--neon-orange);
+      border-color: rgba(249, 115, 22, 0.3);
+      background: rgba(249, 115, 22, 0.05);
+    }
+
+    .level-indicator {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      background: rgba(249, 115, 22, 0.15);
+      color: var(--neon-orange);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      letter-spacing: 0.05em;
+    }
+
+    .quiz-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #fff 40%, var(--neon-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+    }
+
+    .slogan {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 1.2rem;
+      font-weight: 500;
+    }
+
+    /* Configuration Panel */
+    .config-panel {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .config-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--neon-orange);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .config-desc {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .input-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: 0.03em;
+    }
+
+    .input-field {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      color: white;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--neon-orange);
+      box-shadow: 0 0 14px rgba(249, 115, 22, 0.25);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .question-block {
+      margin-bottom: 2.5rem;
+      padding: 1.2rem;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .question-block:hover {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .question-text {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .option-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .option-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateX(4px);
+    }
+
+    .option-radio {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--text-sub);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .option-radio::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: white;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+
+    .option-item.selected {
+      background: rgba(249, 115, 22, 0.08);
+      border-color: var(--neon-orange);
+    }
+
+    .option-item.selected .option-radio {
+      border-color: var(--neon-orange);
+    }
+
+    .option-item.selected .option-radio::after {
+      opacity: 1;
+      background: var(--neon-orange);
+    }
+
+    /* Post-submission correct/incorrect styles */
+    .option-item.correct {
+      background: rgba(16, 185, 129, 0.08) !important;
+      border-color: var(--neon-green) !important;
+    }
+
+    .option-item.correct .option-radio {
+      border-color: var(--neon-green) !important;
+      background: var(--neon-green) !important;
+    }
+
+    .option-item.correct .option-radio::after {
+      opacity: 1 !important;
+      background: white !important;
+    }
+
+    .option-item.incorrect {
+      background: rgba(239, 68, 68, 0.08) !important;
+      border-color: var(--neon-red) !important;
+    }
+
+    .option-item.incorrect .option-radio {
+      border-color: var(--neon-red) !important;
+      background: var(--neon-red) !important;
+    }
+
+    .option-item.incorrect .option-radio::after {
+      opacity: 1 !important;
+      background: white !important;
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 1.2rem;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, var(--neon-orange), var(--neon-purple));
+      color: white;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(249, 115, 22, 0.2);
+      letter-spacing: 0.05em;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      opacity: 0.95;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(249, 115, 22, 0.35);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .explanation {
+      margin-top: 1.2rem;
+      padding: 1.2rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 4px solid var(--neon-orange);
+      border-radius: 0 12px 12px 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-sub);
+      display: none;
+      animation: slide-down 0.4s ease;
+    }
+
+    @keyframes slide-down {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .status-msg {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .status-msg.success {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid var(--neon-green);
+      color: var(--neon-green);
+    }
+
+    .status-msg.error {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid var(--neon-red);
+      color: var(--neon-red);
+    }
+
+    /* Simulation Sheet Grid Styling */
+    .sheet-simulation {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 1.8rem;
+      margin-top: 2rem;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 0.8rem;
+    }
+
+    .sheet-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--neon-green);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sheet-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .sheet-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+      min-width: 650px;
+    }
+
+    .sheet-table th, .sheet-table td {
+      padding: 0.8rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sheet-table th {
+      background: rgba(255, 255, 255, 0.04);
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .sheet-table td {
+      color: var(--text-sub);
+    }
+
+    .sheet-table tr.new-row {
+      animation: highlight-row 2.5s ease-out;
+    }
+
+    @keyframes highlight-row {
+      0% { background-color: rgba(16, 185, 129, 0.25); }
+      100% { background-color: transparent; }
+    }
+
+    /* GAS Code Panel */
+    .gas-panel {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 1.8rem;
+      margin-top: 2rem;
+    }
+
+    .gas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .gas-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .copy-btn {
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--neon-cyan);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .copy-btn:hover {
+      background: var(--neon-cyan);
+      color: var(--bg-dark);
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+    }
+
+    .gas-code-wrapper {
+      position: relative;
+      background: #090d16;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .gas-code-wrapper pre {
+      margin: 0;
+      padding: 1rem;
+    }
+
+    .gas-code-wrapper code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      line-height: 1.5;
+      display: block;
+      white-space: pre;
+    }
+
+    .gas-tutorial {
+      margin-top: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      line-height: 1.6;
+    }
+
+    .gas-tutorial ol {
+      margin-left: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .gas-tutorial li {
+      margin-bottom: 0.4rem;
+    }
+
+    .step-highlight {
+      color: var(--neon-orange);
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--text-sub);
+      font-size: 0.8rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="nav-header">
+      <a class="back-btn" href="/levels.html">← 返回等級指南</a>
+      <span class="level-indicator">LEVEL 2：試算表後端</span>
+    </div>
+
+    <div class="quiz-card">
+      <h1>互動式能力階梯測驗 - Lv.2</h1>
+      <p class="slogan">課後回收版・將資料寫入試算表</p>
+
+      <!-- Configuration -->
+      <div class="config-panel">
+        <div class="config-title">⚙️ Google Apps Script (GAS) 部署配置</div>
+        <p class="config-desc">
+          您可以部署下方提供的 <code>gas-code.js</code> 到您的 Google Apps Script，並在此填入部署完成後的「網頁應用程式 URL」。
+          若無網頁應用程式 URL，系統將啟動<b>模擬模式</b>，直接在網頁下方的「虛擬試算表」中動態渲染您的提交結果！
+        </p>
+        <div class="input-group">
+          <label for="gas-url">GAS 部署網頁應用程式 URL</label>
+          <input type="text" id="gas-url" class="input-field" placeholder="https://script.google.com/macros/s/.../exec">
+        </div>
+      </div>
+
+      <!-- Quiz Form -->
+      <div id="quiz-container">
+        <div class="input-group" style="margin-bottom: 2rem;">
+          <label for="student-nickname">座號 / 暱稱 (必填)</label>
+          <input type="text" id="student-nickname" class="input-field" placeholder="請輸入座號或暱稱，例如：70308 或 小明">
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-block" data-qindex="0">
+          <p class="question-text">1. 下列關於 Lv.1 純前端（算完就忘）架構的敘述，何者正確？</p>
+          <div class="options-list">
+            <div class="option-item" onclick="selectOption(0, 'A')">
+              <span class="option-radio"></span>
+              <span>A. 資料會存存放於 Google 試算表中</span>
+            </div>
+            <div class="option-item" onclick="selectOption(0, 'B')">
+              <span class="option-radio"></span>
+              <span>B. 關閉網頁或重新整理後，先前的作答資料就會消失</span>
+            </div>
+            <div class="option-item" onclick="selectOption(0, 'C')">
+              <span class="option-radio"></span>
+              <span>C. 必須撰寫複雜的 Firebase 安全規則</span>
+            </div>
+            <div class="option-item" onclick="selectOption(0, 'D')">
+              <span class="option-radio"></span>
+              <span>D. 可以安全地隱藏 AI API Key</span>
+            </div>
+          </div>
+          <div class="explanation" id="exp-0">
+            <strong>解析：</strong>B 是正確答案。Lv.1 完全運行在瀏覽器記憶體中，關閉或重新整理網頁後資料即消失，無任何資料庫或後端，因此零維護成本且隱私極度安全。
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-block" data-qindex="1">
+          <p class="question-text">2. 老師想以「非即時」方式收集學生成績，且希望在自己最熟悉的試算表介面查看數據，最適合哪一級？</p>
+          <div class="options-list">
+            <div class="option-item" onclick="selectOption(1, 'A')">
+              <span class="option-radio"></span>
+              <span>A. Lv.1 純前端</span>
+            </div>
+            <div class="option-item" onclick="selectOption(1, 'B')">
+              <span class="option-radio"></span>
+              <span>B. Lv.2 Google Sheets 後端</span>
+            </div>
+            <div class="option-item" onclick="selectOption(1, 'C')">
+              <span class="option-radio"></span>
+              <span>C. Lv.3 Firebase 後端</span>
+            </div>
+            <div class="option-item" onclick="selectOption(1, 'D')">
+              <span class="option-radio"></span>
+              <span>D. 前後端 + AI</span>
+            </div>
+          </div>
+          <div class="explanation" id="exp-1">
+            <strong>解析：</strong>B 是正確答案。Lv.2 使用 Google Sheets 作為後端，資料直接寫入試算表，方便老師讀取、排序 and 分析，非常適合非即時的成績登錄。
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-block" data-qindex="2">
+          <p class="question-text">3. 關於 Lv.3 Firebase 後端（即時競賽版）與 Lv.2 Google Sheets 後端（課後回收版）的主要差別，下列敘述何者正確？</p>
+          <div class="options-list">
+            <div class="option-item" onclick="selectOption(2, 'A')">
+              <span class="option-radio"></span>
+              <span>A. Lv.3 可以做到「秒級」的多人即時同步與大螢幕排行榜更新</span>
+            </div>
+            <div class="option-item" onclick="selectOption(2, 'B')">
+              <span class="option-radio"></span>
+              <span>B. Lv.3 寫入速度較慢，比較適合非即時的課後回饋</span>
+            </div>
+            <div class="option-item" onclick="selectOption(2, 'C')">
+              <span class="option-radio"></span>
+              <span>C. Lv.2 不需要透過 any 後端代理就能把資料直接存入</span>
+            </div>
+            <div class="option-item" onclick="selectOption(2, 'D')">
+              <span class="option-radio"></span>
+              <span>D. Lv.2 可以承載比 Lv.3 更高頻率的多人同時寫入</span>
+            </div>
+          </div>
+          <div class="explanation" id="exp-2">
+            <strong>解析：</strong>A 是正確答案。Lv.3 使用 Firebase 即時資料庫，具備極強的即時同步能力，非常適合課堂當下的多人搶答與即時排行榜；而 Lv.2 (Google Sheets) 寫入與響應速度較慢，不適合秒級同步。
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-block" data-qindex="3">
+          <p class="question-text">4. 在 Lv.4 中，為了不讓 Groq API Key 在前端瀏覽器中外洩（被按 F12 檢視原始碼偷走），正確的做法是？</p>
+          <div class="options-list">
+            <div class="option-item" onclick="selectOption(3, 'A')">
+              <span class="option-radio"></span>
+              <span>A. 將 Key 寫在前端 JavaScript 的變數中，並進行加密</span>
+            </div>
+            <div class="option-item" onclick="selectOption(3, 'B')">
+              <span class="option-radio"></span>
+              <span>B. 將 Key 放在 Firebase Firestore 的公開欄位</span>
+            </div>
+            <div class="option-item" onclick="selectOption(3, 'C')">
+              <span class="option-radio"></span>
+              <span>C. 使用 Netlify Functions 當作後端代理，並將 Key 存放在伺服器環境變數中</span>
+            </div>
+            <div class="option-item" onclick="selectOption(3, 'D')">
+              <span class="option-radio"></span>
+              <span>D. 將 Key 存放在 Google 試算表內，由前端直接 Fetch 讀取</span>
+            </div>
+          </div>
+          <div class="explanation" id="exp-3">
+            <strong>解析：</strong>C 是正確答案。Netlify Functions 在伺服器端運行，能讀取環境變數，前端只能呼叫其端點而碰不到金鑰本身，非常安全。
+          </div>
+        </div>
+
+        <button class="action-btn" onclick="submitQuiz()" id="submit-btn">送出測驗並寫入試算表</button>
+        <div class="status-msg" id="status-display"></div>
+      </div>
+    </div>
+
+    <!-- Sheet Simulator -->
+    <div class="sheet-simulation">
+      <div class="sheet-header">
+        <div class="sheet-title">📊 Google Sheets 試算表即時檢視器 (模擬 / 連線)</div>
+        <span id="connection-badge" style="font-size: 0.75rem; font-weight: 700; color: #cbd5e1; background: rgba(255,255,255,0.1); padding: 0.25rem 0.7rem; border-radius: 50px; border: 1px solid rgba(255,255,255,0.05);">模擬模式</span>
+      </div>
+      <div class="sheet-table-wrapper">
+        <table class="sheet-table">
+          <thead>
+            <tr>
+              <th>時間戳記</th>
+              <th>座號/暱稱</th>
+              <th>測驗得分</th>
+              <th>Q1 回答</th>
+              <th>Q2 回答</th>
+              <th>Q3 回答</th>
+              <th>Q4 回答</th>
+            </tr>
+          </thead>
+          <tbody id="sheet-body">
+            <tr>
+              <td>2026/07/09 18:30:15</td>
+              <td>70102 王小熊</td>
+              <td>75</td>
+              <td>B</td>
+              <td>B</td>
+              <td>A</td>
+              <td>D</td>
+            </tr>
+            <tr>
+              <td>2026/07/09 19:12:44</td>
+              <td>70125 李小華</td>
+              <td>100</td>
+              <td>B</td>
+              <td>B</td>
+              <td>A</td>
+              <td>C</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- GAS Code Panel -->
+    <div class="gas-panel">
+      <div class="gas-header">
+        <div class="gas-title">📄 Google Apps Script (GAS) 部署程式碼</div>
+        <button class="copy-btn" onclick="copyGasCode(this)">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>複製程式碼</span>
+        </button>
+      </div>
+      <div class="gas-code-wrapper">
+        <pre><code id="gas-code-content">/**
+ * 寫教學應用程式的五個等級 - Lv.2 Google Sheets 試算表後端
+ * 
+ * 此版本為自動化免設定版：
+ * 1. 部署為網頁應用程式後，第一次收到資料或執行時，會自動在您的 Google 雲端硬碟建立名為「寫教學應用程式的五個等級 - Lv.2 測驗成績單」的試算表。
+ * 2. 提供 doGet 端點，前端可以直接查詢對應試算表的雲端網址。
+ */
+
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.tryLock(30000);
+  
+  try {
+    // 取得或自動建立試算表工作表
+    var sheet = getOrCreateSheet();
+    
+    // 解析前端傳來的 JSON 資料
+    var data = JSON.parse(e.postData.contents);
+    var timestamp = new Date();
+    var nickname = data.nickname || "未填寫";
+    var score = data.score !== undefined ? data.score : 0;
+    var answers = data.answers || [];
+    
+    // 組裝寫入行
+    var rowData = [
+      timestamp,
+      nickname,
+      score,
+      answers[0] || "",
+      answers[1] || "",
+      answers[2] || "",
+      answers[3] || ""
+    ];
+    
+    sheet.appendRow(rowData);
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "success",
+      message: "資料已成功寫入試算表！",
+      row: sheet.getLastRow()
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "error",
+      message: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// 支援透過 GET 取得試算表網址，方便前端直接超連結開啟
+function doGet(e) {
+  try {
+    var sheet = getOrCreateSheet();
+    var parentSs = sheet.getParent();
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "success",
+      sheetUrl: parentSs.getUrl(),
+      sheetId: parentSs.getId()
+    })).setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "error",
+      message: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doOptions(e) {
+  return ContentService.createTextOutput("")
+    .setMimeType(ContentService.MimeType.TEXT);
+}
+
+// 取得或建立試算表核心邏輯
+function getOrCreateSheet() {
+  var props = PropertiesService.getScriptProperties();
+  var sheetId = props.getProperty("SHEET_ID");
+  
+  if (sheetId) {
+    try {
+      var ss = SpreadsheetApp.openById(sheetId);
+      return ss.getActiveSheet();
+    } catch (e) {
+      // 試算表可能被刪除，清除紀錄並重新建立
+      props.deleteProperty("SHEET_ID");
+    }
+  }
+  
+  // 建立全新試算表
+  var ss = SpreadsheetApp.create("寫教學應用程式的五個等級 - Lv.2 測驗成績單");
+  var sheet = ss.getActiveSheet();
+  sheet.appendRow(["時間戳記", "座號/暱稱", "測驗得分", "題目 1 回答", "題目 2 回答", "題目 3 回答", "題目 4 回答"]);
+  
+  // 保存試算表 ID 到屬性服務中
+  props.setProperty("SHEET_ID", ss.getId());
+  
+  return sheet;
+}</code></pre>
+      </div>
+      <div class="gas-tutorial">
+        <div style="font-weight: 700; margin-bottom: 0.5rem;">🛠️ 如何部署並取得 GAS 網頁應用程式 URL？</div>
+        <ol>
+          <li>點擊上方 <span class="step-highlight">「複製程式碼」</span> 按鈕複製後端程式碼。</li>
+          <li>開啟你的 <a href="https://script.google.com" target="_blank" style="color: var(--neon-cyan); text-decoration: underline;">Google Apps Script 控制台</a>，建立一個新專案。</li>
+          <li>清空預設的 <code>代碼.gs</code>，將複製的程式碼貼上，並存檔。</li>
+          <li>點擊右上方 <span class="step-highlight">「部署」->「新增部署」</span>。</li>
+          <li>選取類型為 <span class="step-highlight">「網頁應用程式」</span>，設定「誰有權存取」為 <span class="step-highlight">「所有人 (Anyone)」</span>，並點擊部署。</li>
+          <li>複製部署完成所產生的 <span class="step-highlight">「網頁應用程式網址」</span>，將其貼回上方配置面板即可！</li>
+        </ol>
+      </div>
+    </div>
+
+    <footer>
+      <p>開發環境已對接 Netlify CLI 部署 ｜ © 2026 三師爸 Ability Quiz System</p>
+    </footer>
+  </div>
+
+  <script>
+    const correctAnswers = ['B', 'B', 'A', 'C'];
+    let userAnswers = [null, null, null, null];
+    let isGraded = false;
+
+    // Auto-fetch spreadsheet URL on load
+    async function loadSheetUrl() {
+      const gasUrl = document.getElementById('gas-url').value.trim();
+      const badge = document.getElementById('connection-badge');
+      if (gasUrl.startsWith('http')) {
+        badge.textContent = '連線模式 (GAS)';
+        badge.style.color = '#10b981';
+        badge.style.backgroundColor = 'rgba(16, 185, 129, 0.15)';
+        badge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        
+        try {
+          const response = await fetch(gasUrl);
+          const data = await response.json();
+          if (data.status === 'success' && data.sheetUrl) {
+            const titleEl = document.querySelector('.sheet-title');
+            titleEl.innerHTML = `📊 <a href="${data.sheetUrl}" target="_blank" style="color: var(--neon-green); text-decoration: underline; font-weight: 700; display: flex; align-items: center; gap: 0.3rem;">點此開啟您的雲端 Google 試算表 ↗</a>`;
+          }
+        } catch (e) {
+          console.warn("無法獲取雲端試算表連結:", e);
+        }
+      } else {
+        badge.textContent = '模擬模式';
+        badge.style.color = '#cbd5e1';
+        badge.style.backgroundColor = 'rgba(255,255,255,0.1)';
+        badge.style.borderColor = 'rgba(255,255,255,0.05)';
+        const titleEl = document.querySelector('.sheet-title');
+        titleEl.innerHTML = `📊 Google Sheets 試算表即時檢視器 (模擬 / 連線)`;
+      }
+    }
+
+    window.addEventListener('load', loadSheetUrl);
+
+    // Detect if URL changes
+    document.getElementById('gas-url').addEventListener('input', function(e) {
+      loadSheetUrl();
+    });
+
+    function selectOption(qIndex, optionLetter) {
+      if (isGraded) return;
+      
+      const qBlock = document.querySelector(`.question-block[data-qindex="${qIndex}"]`);
+      const options = qBlock.querySelectorAll('.option-item');
+      
+      options.forEach(opt => opt.classList.remove('selected'));
+      
+      const letterIndex = optionLetter.charCodeAt(0) - 65;
+      options[letterIndex].classList.add('selected');
+      
+      userAnswers[qIndex] = optionLetter;
+    }
+
+    async function submitQuiz() {
+      if (isGraded) return;
+
+      const nickname = document.getElementById('student-nickname').value.trim();
+      if (!nickname) {
+        alert('請先輸入座號或暱稱！');
+        document.getElementById('student-nickname').focus();
+        return;
+      }
+      
+      if (userAnswers.includes(null)) {
+        alert('請回答完所有題目後再送出！');
+        return;
+      }
+
+      isGraded = true;
+      let score = 0;
+
+      // Grade questions
+      for (let i = 0; i < correctAnswers.length; i++) {
+        const qBlock = document.querySelector(`.question-block[data-qindex="${i}"]`);
+        const options = qBlock.querySelectorAll('.option-item');
+        const correctIndex = correctAnswers[i].charCodeAt(0) - 65;
+        const userIndex = userAnswers[i].charCodeAt(0) - 65;
+
+        document.getElementById(`exp-${i}`).style.display = 'block';
+
+        if (userAnswers[i] === correctAnswers[i]) {
+          score += 25;
+          options[correctIndex].classList.add('correct');
+        } else {
+          options[userIndex].classList.add('incorrect');
+          options[correctIndex].classList.add('correct');
+        }
+      }
+
+      // Prepare data
+      const payload = {
+        nickname: nickname,
+        score: score,
+        answers: userAnswers
+      };
+
+      const gasUrl = document.getElementById('gas-url').value.trim();
+      const statusDisplay = document.getElementById('status-display');
+      
+      if (gasUrl.startsWith('http')) {
+        // Active mode: POST to GAS
+        statusDisplay.className = 'status-msg';
+        statusDisplay.style.display = 'block';
+        statusDisplay.textContent = '正在將資料傳送至 Google 試算表...';
+        
+        try {
+          await fetch(gasUrl, {
+            method: 'POST',
+            mode: 'no-cors', // Apps Script web app accepts no-cors fetch
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+          
+          statusDisplay.className = 'status-msg success';
+          statusDisplay.textContent = '🎉 傳送完畢！由於 CORS 限制，無法直接讀取回傳值，請在您的 Google 試算表中查看是否有新增資料列。';
+          
+          // Still add to simulation table for visual feedback
+          addToSimulationTable(nickname, score, userAnswers);
+
+        } catch (error) {
+          statusDisplay.className = 'status-msg error';
+          statusDisplay.textContent = '❌ 連線錯誤: ' + error.message;
+          console.error(error);
+          isGraded = false; // allow retry on error
+        }
+      } else {
+        // Simulation mode
+        statusDisplay.className = 'status-msg success';
+        statusDisplay.style.display = 'block';
+        statusDisplay.innerHTML = '🎉 <b>已成功進入模擬模式！</b> 資料已成功「寫入」下方虛擬試算表中。這是您熟悉的試算表視角。';
+        
+        addToSimulationTable(nickname, score, userAnswers);
+      }
+
+      const submitBtn = document.getElementById('submit-btn');
+      submitBtn.disabled = true;
+    }
+
+    function addToSimulationTable(nickname, score, answers) {
+      const tbody = document.getElementById('sheet-body');
+      const now = new Date();
+      const timeStr = now.getFullYear() + '/' + 
+                      String(now.getMonth() + 1).padStart(2, '0') + '/' + 
+                      String(now.getDate()).padStart(2, '0') + ' ' + 
+                      String(now.getHours()).padStart(2, '0') + ':' + 
+                      String(now.getMinutes()).padStart(2, '0') + ':' + 
+                      String(now.getSeconds()).padStart(2, '0');
+
+      const tr = document.createElement('tr');
+      tr.className = 'new-row';
+      tr.innerHTML = `
+        <td>${timeStr}</td>
+        <td>${nickname}</td>
+        <td>${score}</td>
+        <td>${answers[0]}</td>
+        <td>${answers[1]}</td>
+        <td>${answers[2]}</td>
+        <td>${answers[3]}</td>
+      `;
+      tbody.insertBefore(tr, tbody.firstChild);
+    }
+
+    function copyGasCode(btnEl) {
+      const codeText = document.getElementById('gas-code-content').textContent;
+      navigator.clipboard.writeText(codeText).then(() => {
+        const originalHTML = btnEl.innerHTML;
+        btnEl.innerHTML = `
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>已複製！</span>
+        `;
+        btnEl.style.background = 'rgba(16, 185, 129, 0.15)';
+        btnEl.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        btnEl.style.color = 'var(--neon-green)';
+        setTimeout(() => {
+          btnEl.innerHTML = originalHTML;
+          btnEl.style.background = '';
+          btnEl.style.borderColor = '';
+          btnEl.style.color = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('複製失敗: ', err);
+        alert('複製失敗，請手動全選程式碼複製！');
+      });
+    }
+  </script>
+</body>
+</html>

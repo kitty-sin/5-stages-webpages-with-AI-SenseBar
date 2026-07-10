@@ -7,7 +7,8 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         screen: resolve(__dirname, 'screen.html'),
-        levels: resolve(__dirname, 'levels.html')
+        levels: resolve(__dirname, 'levels.html'),
+        quiz: resolve(__dirname, 'lv2-google-sheets/index.html')
       }
     }
   }
