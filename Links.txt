@@ -2,6 +2,17 @@
 
 GitHub Repository: kitty-sin/5-stages-webpages-with-AI-SenseBar
 
+
+注意: 在本地端啟動開發伺服器（本地測試與開發）
+如果您想在本機編輯程式碼並即時預覽，請不要直接雙擊 HTML 檔案。請依循以下步驟：
+
+在Windows PowerShell 中執行：
+
+npm.cmd run dev
+
+瀏覽器會自動開啟或在終端機顯示本地網址，例如：http://localhost:5173/。
+點選該網址進入，您就能在本機完美進行跳轉、測試與開發。
+
 ------------------
 
 文字雲

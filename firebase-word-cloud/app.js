@@ -14,12 +14,12 @@ import {
 
 // Firebase Config
 const firebaseConfig = {
-  apiKey: "AIzaSyBSp64Qj6zzKsAq50x2wCmGIEl0qOQihW8",
-  authDomain: "stages-webpages-ai-sensebar.firebaseapp.com",
-  projectId: "stages-webpages-ai-sensebar",
-  storageBucket: "stages-webpages-ai-sensebar.firebasestorage.app",
-  messagingSenderId: "506971950207",
-  appId: "1:506971950207:web:9a0f54d11641fd7dc5834a"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
