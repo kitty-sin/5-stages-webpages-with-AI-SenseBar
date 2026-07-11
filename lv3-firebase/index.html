@@ -643,8 +643,7 @@
       const q = query(
         collection(db, "quiz_lv3_leaderboard"), 
         orderBy("score", "desc"),
-        orderBy("timestamp", "asc"), // same score, earlier submission wins
-        limit(10)
+        limit(30)
       );
 
       onSnapshot(q, (snapshot) => {
@@ -656,9 +655,23 @@
           return;
         }
 
-        let rank = 1;
+        const items = [];
         snapshot.forEach((doc) => {
-          const data = doc.data();
+          items.push(doc.data());
+        });
+
+        // Sort in memory: score desc, timestamp asc (earlier submission wins)
+        items.sort((a, b) => {
+          if (b.score !== a.score) {
+            return b.score - a.score;
+          }
+          const timeA = a.timestamp ? (a.timestamp.toDate ? a.timestamp.toDate() : new Date(a.timestamp)) : new Date(0);
+          const timeB = b.timestamp ? (b.timestamp.toDate ? b.timestamp.toDate() : new Date(b.timestamp)) : new Date(0);
+          return timeA - timeB;
+        });
+
+        let rank = 1;
+        items.slice(0, 10).forEach((data) => {
           createLeaderboardRow(container, rank, data.nickname, data.score, data.timestamp);
           rank++;
         });
