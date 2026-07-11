@@ -153,7 +153,8 @@ function initScreenPage() {
   const loadingEl = document.getElementById("cloud-loading");
 
   // Display URL for students to join
-  const joinURL = window.location.origin;
+  const baseFolder = path.substring(0, path.lastIndexOf('/') + 1);
+  const joinURL = window.location.origin + baseFolder;
   joinUrlDisplay.innerText = joinURL;
 
   let currentLockState = false;
@@ -439,7 +440,7 @@ function initScreenPage() {
 // -------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
   const path = window.location.pathname;
-  if (path.includes("screen.html") || window.location.search.includes("mode=screen")) {
+  if (path.includes("screen") || window.location.search.includes("mode=screen")) {
     initScreenPage();
   } else if (path.includes("levels.html")) {
     // Do nothing for levels.html - it runs app.js
