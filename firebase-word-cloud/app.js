@@ -153,7 +153,8 @@ function initScreenPage() {
   const loadingEl = document.getElementById("cloud-loading");
 
   // Display URL for students to join
-  const baseFolder = path.substring(0, path.lastIndexOf('/') + 1);
+  const pathName = window.location.pathname;
+  const baseFolder = pathName.substring(0, pathName.lastIndexOf('/') + 1);
   const joinURL = window.location.origin + baseFolder;
   joinUrlDisplay.innerText = joinURL;
 
